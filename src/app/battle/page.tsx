@@ -13,28 +13,28 @@ export default function BattlePage() {
     useBattleStore();
 
   useEffect(() => {
-  (async () => {
-    await startGame();
-  })();
+    (async () => {
+      await startGame();
+    })();
 
-  const blockInspect = (e: KeyboardEvent) => {
-    if (
-      (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(e.key)) ||
-      (e.ctrlKey && e.key === "U") ||
-      e.key === "F12"
-    ) {
-      e.preventDefault();
-    }
-  };
+    const blockInspect = (e: KeyboardEvent) => {
+      if (
+        (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(e.key)) ||
+        (e.ctrlKey && e.key === "U") ||
+        e.key === "F12"
+      ) {
+        e.preventDefault();
+      }
+    };
 
-  window.addEventListener("keydown", blockInspect);
-  document.addEventListener("contextmenu", (e) => e.preventDefault());
+    window.addEventListener("keydown", blockInspect);
+    document.addEventListener("contextmenu", (e) => e.preventDefault());
 
-  return () => {
-    window.removeEventListener("keydown", blockInspect);
-    document.removeEventListener("contextmenu", (e) => e.preventDefault());
-  };
-}, []);
+    return () => {
+      window.removeEventListener("keydown", blockInspect);
+      document.removeEventListener("contextmenu", (e) => e.preventDefault());
+    };
+  }, []);
 
   if (isGameOver) {
     return (
@@ -64,9 +64,19 @@ export default function BattlePage() {
 
         {/* Right Panel */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-xl p-4">
-            <h2 className="text-xl font-bold mb-2">💻 Your Code</h2>
-            <CodeEditor />
+          <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-xl p-4 space-y-4">
+            <div>
+              <h2 className="text-xl font-bold mb-2">💻 Your Code</h2>
+              <CodeEditor />
+            </div>
+            <div className="text-right">
+              <button
+                onClick={startNextRound}
+                className="px-4 py-2 mt-2 rounded bg-green-600 text-white hover:bg-green-700 transition"
+              >
+                ✅ Submit & Go to Next Round
+              </button>
+            </div>
           </div>
           <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-xl p-4">
             <h2 className="text-xl font-bold mb-2">🔍 Live Preview</h2>
@@ -74,15 +84,6 @@ export default function BattlePage() {
           </div>
         </div>
       </div>
-      <button
-        onClick={() => {
-          // Optional: save to localStorage or backend
-          startNextRound();
-        }}
-        className="px-4 py-2 mt-6 rounded bg-green-600 text-white hover:bg-green-700 transition"
-      >
-        ✅ Submit & Go to Next Round
-      </button>
     </div>
   );
 }
