@@ -21,6 +21,16 @@ interface BattleStore {
 }
 
 const roundLevels = ["easy", "medium", "hard"] as const;
+function getTimeForLabel(label: "easy" | "medium" | "hard") {
+  switch (label) {
+    case "easy":
+      return 3 * 60;
+    case "medium":
+      return 10 * 60;
+    case "hard":
+      return 15 * 60;
+  }
+}
 
 export const useBattleStore = create<BattleStore>((set, get) => ({
   code: "",
@@ -34,36 +44,39 @@ export const useBattleStore = create<BattleStore>((set, get) => ({
   setCode: (code) => set({ code }),
   setScore: (score) => set({ score }),
 
-//   pickRandomDesign: async (level = "easy") => {
-//     try {
-//       const design = await generateDesign(level);
-//       set({ design, code: "" });
-//     } catch (err) {
-//       console.error("OpenAI design generation failed. Falling back to static design.", err);
+  //   pickRandomDesign: async (level = "easy") => {
+  //     try {
+  //       const design = await generateDesign(level);
+  //       set({ design, code: "" });
+  //     } catch (err) {
+  //       console.error("OpenAI design generation failed. Falling back to static design.", err);
 
-//       const fallback = designs.filter((d) => d.label === level);
-//       const selected = fallback[Math.floor(Math.random() * fallback.length)];
+  //       const fallback = designs.filter((d) => d.label === level);
+  //       const selected = fallback[Math.floor(Math.random() * fallback.length)];
 
-//       set({ design: selected, code: "" });
-//     }
-//   },
-    pickRandomDesign: async (level = "easy") => {
+  //       set({ design: selected, code: "" });
+  //     }
+  //   },
+  pickRandomDesign: async (level = "easy") => {
     const fallback = designs.filter((d) => d.label === level);
     const selected = fallback[Math.floor(Math.random() * fallback.length)];
     set({ design: selected, code: "" });
-    },
+  },
 
   startGame: async () => {
+    const initialLabel = roundLevels[0];
+    const initialTime = getTimeForLabel(initialLabel);
+
     set({
       currentRound: 0,
       isGameOver: false,
       code: "",
       score: 0,
-      roundLabel: roundLevels[0],
-      timeLeft: 180,
+      roundLabel: initialLabel,
+      timeLeft: initialTime,
     });
 
-    await get().pickRandomDesign(roundLevels[0]);
+    await get().pickRandomDesign(initialLabel);
   },
 
   startNextRound: async () => {
@@ -75,10 +88,12 @@ export const useBattleStore = create<BattleStore>((set, get) => ({
     }
 
     const label = roundLevels[nextRound];
+    const time = getTimeForLabel(label);
+
     set({
       currentRound: nextRound,
       roundLabel: label,
-      timeLeft: 180,
+      timeLeft: time,
       code: "",
     });
 

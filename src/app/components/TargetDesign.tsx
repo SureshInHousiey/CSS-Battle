@@ -22,7 +22,7 @@ export default function TargetDesign() {
   return (
     <iframe
       ref={iframeRef}
-      className="border w-full h-[200px] bg-white"
+      className="border w-full h-[300px] bg-white"
       title="target"
     />
   );

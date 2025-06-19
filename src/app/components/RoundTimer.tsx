@@ -2,6 +2,12 @@
 import { useBattleStore } from '../lib/store';
 import { useEffect } from 'react';
 
+function formatTime(seconds: number): string {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
+
 export default function RoundTimer() {
   const { timeLeft, decrementTime, startNextRound, isGameOver } = useBattleStore();
 
@@ -25,7 +31,7 @@ export default function RoundTimer() {
 
   return (
     <div className="text-center font-bold text-xl py-2">
-      Time Left: {timeLeft}s
+      ⏳ Time Left: <span className="text-yellow-400">{formatTime(timeLeft)}</span>
     </div>
   );
 }

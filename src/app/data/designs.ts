@@ -5,188 +5,118 @@ export type Design = {
   colors?: string[];
 };
 
-type Shape = "square" | "rounded" | "pill" | "triangle-up" | "triangle-down" | "rhombus" | "star" | "hexagon" | "heart" | "parallelogram";
-
-const shapes: Shape[] = [
-  "square",
-  "rounded",
-  "pill",
-  "triangle-up",
-  "triangle-down",
-  "rhombus",
-  "star",
-  "hexagon",
-  "heart",
-  "parallelogram",
-];
-
-function generateShapeHTML(shape: Shape, color: string): string {
-  switch (shape) {
-    case "square":
-      return `<div class="shape"></div>
+function generateEasyDesign(id: number): Design {
+  const color = `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`;
+  return {
+    id,
+    label: 'easy',
+    html: `<label class="switch">
+  <input type="checkbox" />
+  <span class="slider"></span>
+</label>
 <style>
-.shape {
-  width: 100px;
-  height: 100px;
-  background: ${color};
-  margin: 30px auto;
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  margin: 1rem auto;
 }
-</style>`;
-    case "rounded":
-      return `<div class="shape"></div>
-<style>
-.shape {
-  width: 100px;
-  height: 100px;
-  background: ${color};
-  border-radius: 20px;
-  margin: 30px auto;
-}
-</style>`;
-    case "pill":
-      return `<div class="shape"></div>
-<style>
-.shape {
-  width: 150px;
-  height: 50px;
-  background: ${color};
-  border-radius: 50px;
-  margin: 30px auto;
-}
-</style>`;
-    case "triangle-up":
-      return `<div class="shape"></div>
-<style>
-.shape {
+.switch input {
+  opacity: 0;
   width: 0;
   height: 0;
-  border-left: 50px solid transparent;
-  border-right: 50px solid transparent;
-  border-bottom: 100px solid ${color};
-  margin: 30px auto;
 }
-</style>`;
-    case "triangle-down":
-      return `<div class="shape"></div>
-<style>
-.shape {
-  width: 0;
-  height: 0;
-  border-left: 50px solid transparent;
-  border-right: 50px solid transparent;
-  border-top: 100px solid ${color};
-  margin: 30px auto;
-}
-</style>`;
-    case "rhombus":
-      return `<div class="shape"></div>
-<style>
-.shape {
-  width: 100px;
-  height: 100px;
-  background: ${color};
-  transform: rotate(45deg);
-  margin: 30px auto;
-}
-</style>`;
-    case "star":
-      return `<div class="shape"></div>
-<style>
-.shape {
-  color: ${color};
-  font-size: 100px;
-  text-align: center;
-  line-height: 100px;
-  margin: 30px auto;
-}
-.shape::before {
-  content: '★';
-}
-</style>`;
-    case "hexagon":
-      return `<div class="shape"></div>
-<style>
-.shape {
-  width: 100px;
-  height: 55px;
-  background: ${color};
-  position: relative;
-  margin: 30px auto;
-}
-.shape::before,
-.shape::after {
-  content: '';
+.slider {
   position: absolute;
-  width: 0;
-  border-left: 50px solid transparent;
-  border-right: 50px solid transparent;
-}
-.shape::before {
-  bottom: 100%;
-  border-bottom: 27.5px solid ${color};
-}
-.shape::after {
-  top: 100%;
-  border-top: 27.5px solid ${color};
-}
-</style>`;
-    case "heart":
-      return `<div class="shape"></div>
-<style>
-.shape {
-  width: 100px;
-  height: 90px;
-  position: relative;
-  margin: 30px auto;
-}
-.shape::before,
-.shape::after {
-  content: "";
-  position: absolute;
-  width: 100px;
-  height: 90px;
-  background: ${color};
-  border-radius: 50px 50px 0 0;
-}
-.shape::before {
-  left: 50px;
-  transform: rotate(-45deg);
-  transform-origin: 0 100%;
-}
-.shape::after {
+  cursor: pointer;
+  top: 0;
   left: 0;
-  transform: rotate(45deg);
-  transform-origin: 100% 100%;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
 }
-</style>`;
-    case "parallelogram":
-      return `<div class="shape"></div>
-<style>
-.shape {
-  width: 120px;
-  height: 60px;
-  background: ${color};
-  transform: skew(20deg);
-  margin: 30px auto;
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: ${color};
+  transition: 0.4s;
+  border-radius: 50%;
 }
-</style>`;
-  }
+input:checked + .slider {
+  background-color: ${color};
+}
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+</style>`,
+    colors: [color],
+  };
 }
 
-function generateDesigns(label: 'easy' | 'medium' | 'hard', count: number, startId: number): Design[] {
-  return Array.from({ length: count }, (_, i) => {
-    const color = `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0")}`;
-    const shape: Shape = shapes[Math.floor(Math.random() * shapes.length)];
-    return {
-      id: startId + i,
-      label,
-      html: generateShapeHTML(shape, color),
-      colors: [color],
-    };
-  });
+function generateMediumDesign(id: number): Design {
+  const color = `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`;
+  return {
+    id,
+    label: 'medium',
+    html: `<button class="futuristic-btn">Press Me</button>
+<style>
+.futuristic-btn {
+  background: linear-gradient(135deg, ${color}, #000);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  font-size: 16px;
+  border-radius: 8px;
+  box-shadow: 0 0 20px ${color};
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
+.futuristic-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px ${color};
+}
+</style>`,
+    colors: [color],
+  };
+}
+
+function generateHardDesign(id: number): Design {
+  const color1 = `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`;
+  const color2 = `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`;
+  return {
+    id,
+    label: 'hard',
+    html: `<div class="card">
+  <h3>Card Title ${id}</h3>
+  <p>This is a card with a gradient background and soft glass effect.</p>
+</div>
+<style>
+.card {
+  background: linear-gradient(135deg, ${color1}, ${color2});
+  backdrop-filter: blur(10px);
+  padding: 1.5rem;
+  border-radius: 12px;
+  color: white;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+  margin: 2rem auto;
+  width: 300px;
+  font-family: sans-serif;
+  text-align: center;
+}
+</style>`,
+    colors: [color1, color2],
+  };
+}
+
 export const designs: Design[] = [
-  ...generateDesigns('easy', 30, 1),
-  ...generateDesigns('medium', 30, 31),
-  ...generateDesigns('hard', 40, 61),
+  ...Array.from({ length: 30 }, (_, i) => generateEasyDesign(i + 1)),
+  ...Array.from({ length: 30 }, (_, i) => generateMediumDesign(i + 31)),
+  ...Array.from({ length: 40 }, (_, i) => generateHardDesign(i + 61)),
 ];
